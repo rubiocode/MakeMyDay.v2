@@ -71,7 +71,8 @@ function App() {
       <ImageWrapper>
         <ImageGridWrapper>
           {images.map((image, index) => {
-            return <ImageCard key={index} {...image} />
+            /*console.log(image);*/
+            return <ImageCard key={image.id} {...image} />
           })}
         </ImageGridWrapper>
         {/*Setting up lazy loading */}
@@ -135,15 +136,16 @@ const SearchBarWrapper = styled.div`
 
 const ImageWrapper = styled.div`
   background-color: white;
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  margin-top: 15px;
-  width: 100%;`
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    margin-top: 15px;
+    width: 100%;
+  `
 
 const ImageGridWrapper = styled.div`
   background-color: white;
-  column-count: 5;
+  column-count: 4;
   column-gap: 5px;
   display: flex;
   flex-wrap: wrap;
@@ -151,4 +153,5 @@ const ImageGridWrapper = styled.div`
   justify-content: center;
   margin: 0 auto;
   max-width: 1800px
+
 `
