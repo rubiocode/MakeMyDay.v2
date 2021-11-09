@@ -23,35 +23,106 @@ function App() {
   //setting up images
   const [images, setImages] = useState([]);
 
+  //default page is 1 in unsplash, but now we can change the pages as we fetch images
+  const [page, setPage] = useState(1);
+
+  const [query, setQuery] = useState('');
+  const [newImages, setNewImages] = useState(false);
+  const mounted = useRef(false);
+
   //creating function to fetch images
   const fetchImages = async () => {
 
     setLoading(true)
     //using let to store url because it will be changing whether default grid or search image
     let url;
-    url = `${mainUrl}${clientID}`
+    const urlPage = `&page=${page}`;
+    const urlQuery = `&query=${query}`;
+
+
+    if (query) {
+      url = `${searchUrl}${clientID}${urlPage}${urlQuery}`;
+    } else {
+      url = `${mainUrl}${clientID}${urlPage}`;
+    }
+
     try {
       const response = await fetch(url);
       const data = await response.json();
       //console.log(data);
-      setImages(data);
+
+      //we have already preloaded fetched images when app starts, 
+      //we want the new images plus the old images to be added to the array with the spread operator
+      setImages((prevImages) => {
+        if (query && page === 1) {
+          return data.results;
+        } else if (query) {
+          return [...prevImages, ...data.results];
+        } else {
+          return [...prevImages, ...data];
+        }
+      });
+
+      setNewImages(false);
       setLoading(false);
     } catch (e) {
       //setting loading to false even if there is an error
+      setNewImages(false)
       setLoading(false);
       console.log(e);
     }
-  }
+  };
 
   //
   useEffect(() => {
     //running when the app loads
-    fetchImages()
-  }, [])
+    fetchImages();
+  }, [page]);
+
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true;
+      return;
+    }
+    if (!newImages) return;
+    if (loading) return;
+    setPage((prevPage) => {
+      return prevPage + 1;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+  }, [newImages]);
+
+  //manually setting up lazy loading
+  const event = () => {
+    //scroll in the browser for these logs to appear
+    // console.log(`innerHeight ${window.innerHeight}`);
+    // console.log(`scrollY ${window.scrollY}`);
+    // console.log(`body height ${document.body.scrollHeight}`);
+
+    //the higher the number the sooner the fetching of the images
+    if (
+      //bottom of the page
+      window.innerHeight + window.scrollY >= document.body.scrollHeight - 100) {
+      // console.log('WORKING');
+      setNewImages(true);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', event);
+    return () => window.removeEventListener('scroll', event);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Is Working');
+    // console.log('Is Working');
+    if (!query) return;
+    if (page === 1) {
+      fetchImages();
+    }
+    setPage(1);
   }
   return (
     <MainWrapper>
@@ -62,7 +133,12 @@ function App() {
               <SearchIcon />
             </IconButton>
             <form>
-              <input type='text' placeholder='Search images' />
+              <input 
+              type='text' 
+              placeholder='Search images' 
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              />
               <button type='submit' onClick={handleSubmit}></button>
             </form>
           </SearchBarWrapper>
@@ -72,11 +148,11 @@ function App() {
         <ImageGridWrapper>
           {images.map((image, index) => {
             /*console.log(image);*/
-            return <ImageCard key={image.id} {...image} />
+            return <ImageCard key={index} {...image} />
           })}
         </ImageGridWrapper>
         {/*Setting up lazy loading */}
-        {loading && <h2 style={{textAlign:'center', padding:'3rem'}}>Loading...</h2>}
+        {loading && <h2 style={{ textAlign: 'center', padding: '3rem' }}>Loading...</h2>}
       </ImageWrapper>
     </MainWrapper>
   );
