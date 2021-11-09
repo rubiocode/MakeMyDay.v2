@@ -15,12 +15,12 @@ const ImageCard = ({
 }) => {
     return (
         <Wrapper>
-            <Container>
+            <Container className='image'>
                 <img src={regular} alt={alt_description} />
-                <UserWrapper>
+                <UserWrapper className='user-info'>
                     <UserInfoWrapper>
                         <h4 style={{marginBottom:'0.5rem'}} >{name}</h4>
-                        <p style={{marginBottom:'0'}} >{likes}</p>
+                        <p style={{marginBottom:'0'}} >{likes} likes</p>
                     </UserInfoWrapper>
                     <a href={portfolio_url}>
                         <img src={medium} alt={name} style={{width:'2.5rem', height:'2.5rem', borderRadius:'50%'}} />
@@ -41,13 +41,13 @@ const Wrapper = styled.div`
 `
 
 const Container = styled.div`
-    display: flex;
-    align-items: center;
-    box-sizing: border-box;
-    cursor: pointer;
+    ${'' /* display: flex;
+    align-items: center; */}
+    ${'' /* box-sizing: border-box; */}
     width: 236px;
     height: 17.5rem;
-    
+    position: relative;
+    overflow: hidden;
 
     img {
         display: flex;
@@ -58,25 +58,9 @@ const Container = styled.div`
         cursor: pointer;
         border-radius: 16px;
     }
+}
 `
 const UserWrapper = styled.div`
-    position: absolute;
-    width: 100%;
-    padding: 1rem;
-    bottom: 0;
-    left: 0;
-    background: rgba(0, 0, 0, 0.4);
-    color: white;
-    transform: translateY(100%);
-    transition: all 0.3s linear;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    :hover {
-        transform: translateY(0);
-    }
-
     a{
         text-decoration: none;
         font-weight: 700;
@@ -84,4 +68,5 @@ const UserWrapper = styled.div`
 `
 
 const UserInfoWrapper = styled.div`
+
 `
