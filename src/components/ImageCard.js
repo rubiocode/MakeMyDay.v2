@@ -1,7 +1,6 @@
 //styled components import
 import styled from 'styled-components';
 
-
 const ImageCard = ({
     //Deconstructing from unsplash response
     urls:{regular}, 
