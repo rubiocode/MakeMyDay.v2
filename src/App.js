@@ -23,11 +23,15 @@ function App() {
   //setting up images
   const [images, setImages] = useState([]);
 
-  //default page is 1 in unsplash, but now we can change the pages as we fetch images
+  //default page is 1 in unsplash, but now we can change the pages as we fetch images 
   const [page, setPage] = useState(1);
 
+  //setting up searched images query from search bar
   const [query, setQuery] = useState('');
+
+  //new images from lazy loading
   const [newImages, setNewImages] = useState(false);
+
   const mounted = useRef(false);
 
   //creating function to fetch images
@@ -39,12 +43,13 @@ function App() {
     const urlPage = `&page=${page}`;
     const urlQuery = `&query=${query}`;
 
-
+    //I want to use url if there is nothing in query but if there is something then we want what is being queried
     if (query) {
       url = `${searchUrl}${clientID}${urlPage}${urlQuery}`;
     } else {
       url = `${mainUrl}${clientID}${urlPage}`;
     }
+
 
     try {
       const response = await fetch(url);
@@ -54,8 +59,12 @@ function App() {
       //we have already preloaded fetched images when app starts, 
       //we want the new images plus the old images to be added to the array with the spread operator
       setImages((prevImages) => {
+        //if typing brand new query then wipe out old image results (no appending instead wiping out)
         if (query && page === 1) {
           return data.results;
+
+          //if query result unsplash api response sits in a diff array 
+        //called results so need to get first response (data) plus 2nd response(results)
         } else if (query) {
           return [...prevImages, ...data.results];
         } else {
@@ -77,10 +86,12 @@ function App() {
   useEffect(() => {
     //running when the app loads
     fetchImages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   useEffect(() => {
     if (!mounted.current) {
+      //to run after the initial render
       mounted.current = true;
       return;
     }
@@ -89,8 +100,8 @@ function App() {
     setPage((prevPage) => {
       return prevPage + 1;
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newImages]);
 
   //manually setting up lazy loading
@@ -102,8 +113,8 @@ function App() {
 
     //the higher the number the sooner the fetching of the images
     if (
-      //bottom of the page
-      window.innerHeight + window.scrollY >= document.body.scrollHeight - 100) {
+      //bottom of the page as i'm scrolling we change state to true
+      window.innerHeight + window.scrollY >= document.body.scrollHeight - 2) {
       // console.log('WORKING');
       setNewImages(true);
     }
@@ -112,16 +123,23 @@ function App() {
   useEffect(() => {
     window.addEventListener('scroll', event);
     return () => window.removeEventListener('scroll', event);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // console.log('Is Working');
+
+    //if empty input cannot fetch images
     if (!query) return;
+
+    //since state page is default 1 we want to instruct to fetch images
     if (page === 1) {
       fetchImages();
     }
+
+    //set page to 1 so images do not get appended to old results upon new search
     setPage(1);
   }
   return (
