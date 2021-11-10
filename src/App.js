@@ -156,7 +156,7 @@ function App() {
             <form>
               <input 
               type='text' 
-              placeholder='Search images' 
+              placeholder='Search Image' 
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               />
