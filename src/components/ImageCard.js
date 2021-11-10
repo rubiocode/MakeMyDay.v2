@@ -43,7 +43,7 @@ const Container = styled.div`
     ${'' /* display: flex;
     align-items: center; */}
     ${'' /* box-sizing: border-box; */}
-    width: 236px;
+    width: 250px;
     height: 17.5rem;
     position: relative;
     overflow: hidden;

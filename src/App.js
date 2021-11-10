@@ -9,6 +9,7 @@ import styled from 'styled-components';
 
 //Local Files
 import ImageCard from './components/ImageCard';
+import Header from './components/Header';
 
 import './App.css';
 
@@ -145,6 +146,7 @@ function App() {
   }
   return (
     <MainWrapper>
+      <Header />
       <Wrapper>
         <SearchWrapper>
           <SearchBarWrapper>
@@ -189,7 +191,7 @@ const Wrapper = styled.div`
     align-items: center;
     height: 56px;
     padding: 12px 4px 4px 16px;
-    background-color: white;
+    background-color: #D3D0C9;
     color: black;
 `
 
@@ -201,7 +203,8 @@ const SearchBarWrapper = styled.div`
     background-color: #efefef;
     display: flex;
     height: 48px;
-    width: 100%;
+    width: 50%;
+    margin: 0 auto;
     border-radius: 50px;
     border: none;
     padding-left: 10px;
@@ -230,7 +233,6 @@ const SearchBarWrapper = styled.div`
 `
 
 const ImageWrapper = styled.div`
-  background-color: white;
     display: flex;
     height: 100%;
     justify-content: center;
@@ -239,7 +241,7 @@ const ImageWrapper = styled.div`
   `
 
 const ImageGridWrapper = styled.div`
-  background-color: white;
+  background-color: #D3D0C9;
   column-count: 4;
   column-gap: 5px;
   display: flex;
