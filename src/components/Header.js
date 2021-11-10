@@ -1,6 +1,6 @@
 export const Header = () => {
     return (
-        <a href="https://github.com/rubiocode/PhotoSearchApp" rel='noreferrer' target='_blank'>
+        <a href="https://github.com/rubiocode/MakeMyDay.v2" rel='noreferrer' target='_blank'>
             <div className='header'></div>
         </a>
         
