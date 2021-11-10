@@ -9,6 +9,7 @@ import styled from 'styled-components';
 
 //Local Files
 import ImageCard from './components/ImageCard';
+
 import './App.css';
 
 //after adding the process.env variable the terminal must be restarted for it to work!

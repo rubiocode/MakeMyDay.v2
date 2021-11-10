@@ -21,7 +21,7 @@ const ImageCard = ({
                         <h4 style={{marginBottom:'0.5rem'}} >{name}</h4>
                         <p style={{marginBottom:'0'}} >{likes} likes</p>
                     </UserInfoWrapper>
-                    <a href={portfolio_url}>
+                    <a href={portfolio_url} rel='noreferrer' target='_blank'>
                         <img src={medium} alt={name} style={{width:'2.5rem', height:'2.5rem', borderRadius:'50%'}} />
                     </a>
                 </UserWrapper>
